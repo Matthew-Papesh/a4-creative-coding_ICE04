@@ -1,4 +1,5 @@
 import * as THREE from "https://unpkg.com/three@0.180.0/build/three.module.js";
+// Or import specific components
 
 // 1. Scene, Camera, Renderer setup
 const scene = new THREE.Scene();
@@ -7,11 +8,24 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+const ambientLight = new THREE.AmbientLight(0xccccff, 0.5);
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(5, 10, 7.5);
+scene.add(directionalLight);
+
+const textureLoader = new THREE.TextureLoader();
 // 2. Create a 3D object (e.g., a cube)
-const geometry = new THREE.BoxGeometry(1, 1, 1); // width, height, depth
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); // green color
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+let texture = textureLoader.load('/assets/egg_skin.png')
+texture.repeat.set(1.3, 0.9);
+const geometry = new THREE.SphereGeometry(1,32,16)
+const material = new THREE.MeshStandardMaterial({ map: texture, flatShading: true}); // green color
+const ellipse = new THREE.Mesh(geometry, material);
+ellipse.scale.set(1.3,0.9,1)
+scene.add(ellipse);
+
+material.needsUpdate = true
 
 // 3. Position the camera
 camera.position.z = 5;
@@ -20,9 +34,9 @@ camera.position.z = 5;
 function animate() {
     requestAnimationFrame(animate);
 
-    // Rotate the cube
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    // Rotate the ellipse
+    ellipse.rotation.x += 0.01;
+    ellipse.rotation.y += 0.01;
 
     renderer.render(scene, camera);
 }
