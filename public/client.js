@@ -6,6 +6,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.domElement.id = "renderer"
 document.body.appendChild(renderer.domElement);
 
 const ambientLight = new THREE.AmbientLight(0xccccff, 0.5);
@@ -47,5 +48,61 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+// Create raycaster and mouse vector
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+// Listen for clicks on the window
+window.addEventListener('click', (event) => {
+    // Convert mouse position to normalized device coordinates (-1 to +1)
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+    // Update the raycaster
+    raycaster.setFromCamera(mouse, camera);
+
+    // Check if it intersects the ellipse mesh
+    const intersects = raycaster.intersectObject(ellipse);
+
+    if (intersects.length > 0) {
+        start(event)
+        // Example action: scale it
+        ellipse.scale.set(1.5, 1.1, 1);
+    }
+});
+
+const start = function (event) {
+    // stop form submission from trying to load
+    // a new .html page for displaying results...
+    // this was the original browser behavior and still
+    // remains to this day
+    event.preventDefault()
+
+    const canvas = document.createElement('canvas')
+    document.body.appendChild(canvas)
+    canvas.width = canvas.height = 512
+    const ctx = canvas.getContext('2d')
+
+    // audio init
+    const audioCtx = new AudioContext()
+    const audioElement = document.createElement('audio')
+    document.body.appendChild(audioElement)
+
+    // audio graph setup
+    const analyser = audioCtx.createAnalyser()
+    analyser.fftSize = 1024 // 512 bins
+    const player = audioCtx.createMediaElementSource(audioElement)
+    player.connect(audioCtx.destination)
+    player.connect(analyser)
+
+    // make sure, for this example, that your audiofle is accesssible
+    // from your server's root directory... here we assume the file is
+    // in the ssame location as our index.html file
+    audioElement.src = './assets/click.wav'
+    audioElement.play()
+
+    const results = new Uint8Array(analyser.frequencyBinCount)
+}
 
 animate();

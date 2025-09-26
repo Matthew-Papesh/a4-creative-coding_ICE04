@@ -8,12 +8,8 @@
     "start": "nodemon server.js"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "cors": "^2.8.5",
-    "express": "^5.1.0"
-=======
     "express": "^5.1.0",
+    "cors": "^2.8.5",
     "nodemon": "^3.1.10"
->>>>>>> 51bef81d9418b7aae32e1377f6dc054b2c0a75d1
   }
 }
