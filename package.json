@@ -1,21 +1,12 @@
 {
   "name": "ice04_group_project",
   "version": "1.0.0",
-  "description": "This is a group project",
-  "main": "index.js",
+  "description": "Basic Three.js + Express project using CDN",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/Desktop-CNC/GitCAD.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Desktop-CNC/GitCAD/issues"
-  },
-  "homepage": "https://github.com/Desktop-CNC/GitCAD#readme",
   "dependencies": {
     "express": "^5.1.0"
   }
